@@ -25,7 +25,7 @@
         <label for="confirm-password">Confirm Password:</label>
         <input required="" class="form-control" v-model="packet.userpass" name="confirm-password" id="confirm-password" type="password">
       </div>
-    <input type="submit" v-on:click.prevent="register(packet)" class="btn" value="submit">    </form>
+    <input type="submit" v-on:click.prevent="register(packet)" class="btn" value="submit"></form>
   </div>
 </div>
 

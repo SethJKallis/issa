@@ -103,7 +103,7 @@
           </tr>
         </tbody>
       </table>
->>>>>>> 108d6ab631d56c6ab75c0e6d7e97e4fd2a59e8fd
+
     </div>
   </div>
     </div>
@@ -158,17 +158,17 @@ width: 100%; } th, td {
 text-align: left;
 padding: 8px;
 border-bottom: 1px solid #ddd; } th { background-color:
- #f2f2f2; } input, select {
+#f2f2f2; } input, select {
   width: 100%;
   padding: 6px 10px;
   margin: 8px 0;
- box-sizing: border-box;
- border: 2px solid #ccc;
- border-radius: 4px; } button { background-color: #0000FF; color: white;
- padding: 8px 16px;
- border: none;
- border-radius: 4px;
- cursor: pointer; }
+box-sizing: border-box;
+border: 2px solid #ccc;
+border-radius: 4px; } button { background-color: #0000FF; color: white;
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+cursor: pointer; }
 
 button:hover { background-color: #00008B; }
 .table-container { margin-top: 16px; } 

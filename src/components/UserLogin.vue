@@ -17,7 +17,7 @@
     </div>
     <div class="btn">
     <button v-on:click.prevent="login(packet)" class="button1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-    <button class="button2">Sign Up <a><router-link to="/register" class="nav-link"></router-link></a></button>
+
     </div>
     <button class="button3">Forgot Password</button>
 </form>

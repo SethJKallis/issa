@@ -1,6 +1,6 @@
 <template>
   <!-- Nav-Bar -->
-  <nav class="navbar navbar-dark bg-dark navigation-bar d-flex align-items-center justify-content-end w-100">
+  <nav class="navbar navbar-dark bg-dark navigation-bar d-flex align-items-center justify-content-end w-100 ">
     <button
       class="navbar-toggler mb-4 me-4"
       type="button"
@@ -28,25 +28,28 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <router-link to="/" class="nav-link">Home</router-link>
+            <router-link to="/" class="nav-link"><i class="bi bi-house"></i>
+            Home</router-link>
           </li>
           <li class="nav-item">
-            
-            <router-link to="/about" class="nav-link d-flex">
-              <i class="bi bi-exclamation-circle-fill"></i> About
-            </router-link>
+
+            <router-link to="/about" class="nav-link"><i class="bi bi-exclamation-circle-fill "></i> About</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/admin" class="nav-link">Admin</router-link>
+            <router-link to="/admin" class="nav-link"><i class="bi bi-list-task"></i>
+            Admin</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/getaway" class="nav-link">Getaways</router-link>
+            <router-link to="/getaway" class="nav-link"><i class="bi bi-house-add"></i>
+            Getaways</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/cart" class="nav-link">Cart</router-link>
+            <router-link to="/cart" class="nav-link"><i class="bi bi-cart2"></i>
+            Cart</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/contact" class="nav-link">Contact Page</router-link>
+            <router-link to="/contact" class="nav-link"><i class="bi bi-person-lines-fill"></i>
+            Contact Page</router-link>
           </li>
         </ul>
       </div>
@@ -76,7 +79,9 @@ export default {
   margin-right: 10px;
 }
 
-
+.nav-link i{
+  padding: 30px;
+}
 
 .button{
     background-color: black;

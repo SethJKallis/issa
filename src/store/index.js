@@ -10,7 +10,7 @@ export default createStore({
   product: null,
   products: null,
   spinner:true,
-  jwToken:null
+  jwToken:null,
 },
   mutations: {
     setUser: (state, user) =>{
