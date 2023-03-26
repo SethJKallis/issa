@@ -6,6 +6,9 @@
 <script>
 import GetawayComponent from '../components/GetawaysComponent.vue'
     export default {
+        setup(){
+            
+        },
         components: {
             GetawayComponent
         }

@@ -14,6 +14,7 @@ export default {
 <style scoped>
 #page-container {
     position: relative;
+    z-index: 10;
 }
 /* Footer height */
 #content-wrap {

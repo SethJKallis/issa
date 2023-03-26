@@ -1,7 +1,7 @@
 <template>
 <div id="app">
     <div class="container">
-      <h2 class="heading">Add Admins</h2>
+      <h2 class="heading mt-5">USERS</h2>
       <div class="table-container">
         <table>
           <thead>
@@ -10,45 +10,50 @@
               <th>LastName</th>
               <th>Email</th>
               <th>Password</th>
-              <th>Add</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr v-for="user in users" :key="user">
               <td>
-                <input type="text" v-model="newAdmin.name" placeholder="name">
-
-              </td>
-              <td><input type="text" v-model="newAdmin.location" placeholder="location"></td>
-              <td>
-                <input type="email" v-model="newAdmin.price">
+                {{ user.first_name }}
               </td>
               <td>
-                <input type="password" v-model="newAdmin.image">
+                {{ user.last_name }}
               </td>
               <td>
-                <button @click.prevent="addAdmin">Add Admin</button>
+                {{ user.email }}
+              </td>
+              <td>
+                {{ user.userpassword }}
               </td>
             </tr>
           </tbody>
-        </table>
+        </table>  
+          <button @click.prevent="addAdmin">Add User </button>
       </div>
     </div>
     <div class="container mt-5">
-      <h2 class="heading">Add Users</h2>
+      <h2 class="heading">AirBnB</h2>
       <div class="table-container">
         <table>
           <thead>
             <tr>
-              <th>FirstName</th>
-              <th>LastName</th>
-              <th>Email</th>
-              <th>Password</th>
-              <th>Add</th>
+              <th>Name</th>
+              <th>Location</th>
+              <th>Price</th>
+              <th>Description</th>
+              <th>Image</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr v-for="product in products" :key="product">
+              <td>{{ product.name }}</td>
+              <td>{{ product.location }}</td>
+              <td>R{{ product.price }}</td>
+              <td>{{ product.description }}</td>
+              <td><img :src="product.image" alt="" width="100" height="100"></td>
+            </tr>
+            <!-- <tr>
               <td>
                 <input type="text" v-model="newUser.firstname" placeholder="First Name">
               </td>
@@ -65,79 +70,68 @@
               <td>
                 <button @click.prevent="addUser">Add User</button>
               </td>
-            </tr>
+            </tr> -->
 
           </tbody>
+          <tfoot>
+            <tr>
+              <td><input type="text" name="Name" id="Name" placeholder="Name"></td>
+              <td><input type="text" name="location" id="location" placeholder="Location"></td>
+              <td><input type="number" name="price" id="price" placeholder="Price"></td>
+              <td><input type="text" name="description" id="description" placeholder="Description"></td>
+              <td><input type="text" name="image" id="image" placeholder="Image URL"></td>
+            </tr>
+          </tfoot>
         </table>
+        <button class="btn btn-success">Add AirBnB</button>
       </div>
     </div>
-  <div class="container mt-5 mb-5">
-    <h2 class="heading">Add Getaways</h2>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>Email</th>
-            <th>Password</th>
-            <th>Add</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <input type="text" v-model="newGetaways.firstname" placeholder="First Name">
-
-            </td>
-            <td><input type="text" v-model="newGetaways.lastname" placeholder="Last Name"></td>
-            <td>
-              <input type="email" v-model="newGetaways.email">
-            </td>
-            <td>
-              <input type="password" v-model="newGetaways.password">
-            </td>
-            <td>
-              <button @click.prevent="addGetaways">Add Getaways</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
-  </div>
     </div>
 </template>
 
 <script>
+import {useStore} from 'vuex';
+import { computed } from 'vue';
 export default {
   name: 'AdminUsers',
-  data() {
-    return {
-      newUser: {
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: '',
-        role: 'user'
-      },
-      newAdmin: {
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: '',
-        role: 'admin'
-      },
-      newGetaways: {
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: '',
-        role: ''
-      },
-      users: [],
-      admins: [],
-      getaways:[]
+  setup(){
+    const store = useStore();
+
+    let newUser = {
+      first_name: '',
+      last_name: '',
+      email: '',
+      userpassword: '',
+      userRole: 'user'
+    }
+    let newAdmin = {
+      first_name: '',
+      last_name: '',
+      email: '',
+      userpassword: '',
+      userRole: 'admin'
+    }
+    let newAirBnB = {
+      name: '',
+      location: '',
+      cellphoneNumber: '',
+      price: '',
+      image: '',
+      description: ''
+    }
+
+    store.dispatch('fetchUsers');
+    let users = computed(() => store.state.users);
+
+    store.dispatch('fetchProducts');
+    let products = computed(() => store.state.products)
+    
+    return{
+      users,
+      products,
+      newUser,
+      newAdmin,
+      newAirBnB
     }
   },
   methods: {

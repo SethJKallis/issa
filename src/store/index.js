@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 
-const apiLink='https://capstoneapi2.onrender.com';
+const apiLink='http://localhost:4000';
 
 export default createStore({
   state: {
@@ -11,6 +11,7 @@ export default createStore({
   products: null,
   spinner:true,
   jwToken:null,
+  message:null
 },
   mutations: {
     setUser: (state, user) =>{
@@ -31,13 +32,16 @@ export default createStore({
     setToken: (state, jwToken) =>{
       state.jwToken = jwToken;
   },
+  setMessage(state, message){
+    state.message = message
+  }
   },
   actions: {
     async fetchUsers(context){
-      let results = await axios.get(`${apiLink}/users`);
-      let {res, err} = await results.data;
-      if(res){
-        context.commit('setUsers',res);
+      let res = await axios.get(`${apiLink}/users`);
+      let {results, err} = await res.data;
+      if(results){
+        context.commit('setUsers',results);
         context.commit('setSpinner', false)
       }else{
         context.commit('setMessage', err);
@@ -87,7 +91,6 @@ export default createStore({
       if(err) {
           context.commit('setMessage', err)
       }
-      console.log(apiLink);
 },
     async fetchProduct(context, id) {
       const res = await axios.get(`${apiLink}/products/${id}`);

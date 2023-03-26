@@ -21,7 +21,9 @@
         </div>
       </div>
     </div>
-    <div v-else><GetawaySpinner></GetawaySpinner>  </div>
+    <div v-else-if="!featuredGetaways">
+    <GetawaySpinnerE/>  
+    </div>
     <h1 class="text-center my-5 bg-info">All Getaways</h1>
     <div class="row">
       <div v-for="product in products" :key="product.AirBnB_id" class="col-md-4">
@@ -44,6 +46,7 @@
 </template>
 
 <script>
+import GetawaySpinnerE from "./GetawaySpinnerE.vue";
 import { useStore} from "vuex";
 import { computed } from "@vue/runtime-core";
 
@@ -56,6 +59,9 @@ setup() {
       products,
     };
   },
+  components:{
+    GetawaySpinnerE
+  }
 };
 
 </script>
