@@ -57,11 +57,29 @@ export default createStore({
         context.commit('setMessage', err);
       }
     },
+    async editUser(context, payload){
+      let result = await axios.put(`${apiLink}/user/${payload.userID}`,payload);
+      let {res, err} = await result.data;
+      if(res){
+        context.commit('setMessage', res)
+      } else {
+        context.commit('setMessage', err);
+      }
+    },
+    async deleteUser(context, id){
+      let result = axios.delete(`${apiLink}/user/${id}`);
+      let {res,err} = await (await result).data;
+      if(res){
+        context.commit('setMessage', res);
+      } else {
+        context.commit('setMessage', err);
+      }
+    },
     async register(context, payload){
       let result = await axios.post(`${apiLink}/register`, payload);
       let {res, err} = await result.data;
       if(res){
-        context.commit('setUsers',res);
+        context.commit('setMessage',res);
         context.commit('setSpinner', false)
       }else{
         context.commit('setMessage', err);
@@ -104,18 +122,35 @@ export default createStore({
       }
       console.log(apiLink);
 },
-    async deleteProduct(context) {
-      const res = await axios.delete(`${apiLink}/products`);
-      const {results, err} = await res.data;
-      if(results) {
-          context.commit('setProduct', results);
-          context.commit('setSpinner', false);
-      }
-      if(err) {
-          context.commit('setMessage', err)
-      }
-      console.log(apiLink);
+//     async deleteProduct(context) {
+//       const res = await axios.delete(`${apiLink}/products`);
+//       const {results, err} = await res.data;
+//       if(results) {
+//           context.commit('setProduct', results);
+//           context.commit('setSpinner', false);
+//       }
+//       if(err) {
+//           context.commit('setMessage', err)
+//       }
+// },
+async addProduct(context, payload){
+  const result = await axios.post(`${apiLink}/product`, payload);
+  let {res,err} = await result.data;
+  if(res){
+    context.commit('setMessage', res)
+  } else {
+    context.commit('setMessage', err)
+  }
 },
+async deleteProduct(context, id){
+  const result = await axios.delete(`${apiLink}/product/${id}`);
+  let {res,err} = await result.data;
+  if(res){
+    context.commit('setMessage', res)
+  } else {
+    context.commit('setMessage', err);
+  }
+}
 },
   modules: {
   }

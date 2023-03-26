@@ -9,30 +9,51 @@
               <th>FirstName</th>
               <th>LastName</th>
               <th>Email</th>
-              <th>Password</th>
+              <th>Role</th>
+              <th>Edit/Del</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="user in users" :key="user">
               <td>
-                {{ user.first_name }}
+                {{ user.firstName }}
               </td>
               <td>
-                {{ user.last_name }}
+                {{ user.lastName }}
               </td>
               <td>
                 {{ user.email }}
               </td>
               <td>
-                {{ user.userpassword }}
+                {{ user.userRole }}
+              </td>
+              <td>
+                <EditUser :user="user"/>
+                <button class="btn btn-danger" v-on:click="deleteUser(user)">Del</button>
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Role</th>
+              <th>Email</th>
+              <th>Password</th>
+            </tr>
+            <tr>
+              <td><input class="form-control" type="text" name="firstName" id="firstName" placeholder="First Name" v-model="newUser.firstName" required></td>
+              <td><input class="form-control" type="text" name="lastName" id="lastName" placeholder="Last Name" v-model="newUser.lastName" required></td>
+              <td><input class="form-control" type="text" name="userRole" id="userRole" placeholder="admin/user" v-model="newUser.userRole" required></td>
+              <td><input class="form-control" type="email" name="email" id="email" placeholder="Email Address" v-model="newUser.email" required></td>
+              <td><input class="form-control" type="password" name="userPass" id="userPass" placeholder="Password" v-model="newUser.userPass" required></td>
+            </tr>
+          </tfoot>
         </table>  
-          <button @click.prevent="addAdmin">Add User </button>
+          <button class="btn btn-primary" @click.prevent="addUser">Add User </button>
       </div>
     </div>
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
       <h2 class="heading">AirBnB</h2>
       <div class="table-container">
         <table>
@@ -43,6 +64,7 @@
               <th>Price</th>
               <th>Description</th>
               <th>Image</th>
+              <th>Edit/Del</th>
             </tr>
           </thead>
           <tbody>
@@ -52,69 +74,46 @@
               <td>R{{ product.price }}</td>
               <td>{{ product.description }}</td>
               <td><img :src="product.image" alt="" width="100" height="100"></td>
+              <td><button class="btn btn-danger" v-on:click="deleteAirBnB(product)">Del</button></td>
             </tr>
-            <!-- <tr>
-              <td>
-                <input type="text" v-model="newUser.firstname" placeholder="First Name">
-              </td>
-              <td>
-                <input type="text" v-model="newUser.lastname" placeholder="Last Name">
-              </td>
-              <td>
-                <input type="email" v-model="newUser.email">
-              </td>
-              <td>
-                <input type="password" v-model="newUser.password">
-              </td>
 
-              <td>
-                <button @click.prevent="addUser">Add User</button>
-              </td>
-            </tr> -->
 
           </tbody>
           <tfoot>
             <tr>
-              <td><input type="text" name="Name" id="Name" placeholder="Name"></td>
-              <td><input type="text" name="location" id="location" placeholder="Location"></td>
-              <td><input type="number" name="price" id="price" placeholder="Price"></td>
-              <td><input type="text" name="description" id="description" placeholder="Description"></td>
-              <td><input type="text" name="image" id="image" placeholder="Image URL"></td>
+              <td><input type="text" name="Name" id="Name" placeholder="Name" v-model="newAirBnB.name"></td>
+              <td><input type="text" name="location" id="location" placeholder="Location" v-model="newAirBnB.location"></td>
+              <td><input type="number" name="price" id="price" placeholder="Price" v-model="newAirBnB.price"></td>
+              <td><input type="text" name="description" id="description" placeholder="Description" v-model="newAirBnB.description"></td>
+              <td><input type="text" name="image" id="image" placeholder="Image URL" v-model="newAirBnB.image"></td>
             </tr>
           </tfoot>
         </table>
-        <button class="btn btn-success">Add AirBnB</button>
+        <button class="btn btn-success" v-on:click="addAirBnB">Add AirBnB</button>
       </div>
-    </div>
+    </div >
     </div>
 </template>
 
 <script>
 import {useStore} from 'vuex';
 import { computed } from 'vue';
+import EditUser from '@/components/EditUser.vue';
 export default {
   name: 'AdminUsers',
   setup(){
     const store = useStore();
 
     let newUser = {
-      first_name: '',
-      last_name: '',
+      firstName: '',
+      lastName: '',
       email: '',
-      userpassword: '',
+      userPass: '',
       userRole: 'user'
-    }
-    let newAdmin = {
-      first_name: '',
-      last_name: '',
-      email: '',
-      userpassword: '',
-      userRole: 'admin'
     }
     let newAirBnB = {
       name: '',
       location: '',
-      cellphoneNumber: '',
       price: '',
       image: '',
       description: ''
@@ -125,25 +124,52 @@ export default {
 
     store.dispatch('fetchProducts');
     let products = computed(() => store.state.products)
+
+    async function addUser() {
+      if(newUser.firstName == '' || newUser.lastName == '' || newUser.email == '' || newUser.userPass == '') alert("PLEASE FILL OUT ALL FIELDS");
+      else {
+        await store.dispatch('register', newUser);
+        store.dispatch('fetchUsers');
+      }
+    }
+    async function deleteUser(user){
+      await store.dispatch('deleteUser', user.userID);
+      await store.dispatch('fetchUsers');
+
+    }
+    async function addAirBnB(){
+      if(newAirBnB.image == '') delete newAirBnB.image;
+      if(
+      newAirBnB.name == '' || 
+      newAirBnB.location == '' || 
+      newAirBnB.price == '' || 
+      newAirBnB.description == '') alert('PLEASE FILL OUT ALL FIELDS!')
+      else{
+        await store.dispatch('addProduct', newAirBnB);
+        store.dispatch('fetchProducts')
+      }
+    }
+    async function deleteAirBnB(product){
+      await store.dispatch('deleteProduct', product.airbnbID);
+      await store.dispatch('fetchProducts')
+    }
+
     
     return{
       users,
       products,
       newUser,
-      newAdmin,
-      newAirBnB
+      newAirBnB,
+      addUser,
+      deleteUser,
+      addAirBnB,
+      deleteAirBnB
     }
   },
-  methods: {
-    addUser() {
-      this.users.push(this.newUser);
-      this.newUser = { firstname: '', lastname: '', email: '', password: '', role: 'user' };
-    },
-    addAdmin() {
-      this.admins.push(this.newAdmin);
-      this.newAdmin = { firstname: '', lastname: '', email: '', password: '', role: 'admin' };
-    }
+  components:{
+    EditUser
   }
+
 }
 </script>
 
@@ -158,7 +184,7 @@ border-bottom: 1px solid #ddd; } th { background-color:
   margin: 8px 0;
 box-sizing: border-box;
 border: 2px solid #ccc;
-border-radius: 4px; } button { background-color: #0000FF; color: white;
+border-radius: 4px; } button { color: white;
 padding: 8px 16px;
 border: none;
 border-radius: 4px;
