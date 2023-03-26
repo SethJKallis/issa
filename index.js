@@ -17,6 +17,7 @@ const app = express();
 
 //
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 /*
 express.json: setting the content-type to application/json
@@ -33,6 +34,7 @@ app.use((req, res, next)=> {
 });
 app.use(
     cors(),
+    bodyParser.json(),
     cookieParser(),
     express.json(),
     express.urlencoded({extended: false})

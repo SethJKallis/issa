@@ -13,16 +13,16 @@ class User {
         const {emailAdd, userPass} = req.body;
         const Qry =
         `
-        SELECT firstName, lastName, gender, emailAdd, userPass, userRole, userProfile
+        SELECT first_name, last_name, email, userpassword, userRole,
         FROM Users
-        WHERE emailAdd = '${emailAdd}';
+        WHERE email = '${emailAdd}';
         `;
         db.query(Qry, async (err, data)=>{
             if(err) throw err;
             if((!data.length) || (data == null)) {
                 res.status(401).json({err:
                     "You provide a wrong email address"});
-            }else {
+            } else {
                 await compare(userPass,
                     data[0].userPass,
                     (cErr, cResult)=> {
@@ -58,7 +58,7 @@ class User {
     fetchUsers(req, res) {
         const Qry =
         `
-        SELECT userID, firstName, lastName, gender, cellphoneNumber, emailAdd, userRole, userProfile, joinDate, cart
+        SELECT user_ID, first_name, last_name, email, phone_number, userRole, userpassword
         FROM Users;
         `;
 
@@ -72,7 +72,7 @@ class User {
     fetchUser(req, res) {
         const Qry =
         `
-        SELECT userID, firstName, lastName, gender, cellphoneNumber, emailAdd, userRole, userProfile, joinDate, cart
+        SELECT user_ID, first_name, last_name, email, phone_number, userRole, userpassword
         FROM Users
         WHERE user_id = ?;
         `;
@@ -84,22 +84,18 @@ class User {
             else res.status(200).json(
                 {results: data} );
         })
-
     }
     async createUser(req, res) {
         // Payload
         let detail = req.body;
-
         // Hashing user password
         detail.userPass = await
         hash(detail.userPass, 10);
-
         // This information will be used for authentication.
         let user = {
             emailAdd: detail.emailAdd,
             userPass: detail.userPass
         }
-
         // How to insert a sql query
         const Qry =
         `INSERT INTO Users
@@ -165,7 +161,7 @@ class Product {
     }
     fetchProduct(req, res) {
         const Qry = `SELECT * FROM AirBnB
-        WHERE AirBNB_id = ?`;
+        WHERE AirBnB_id = ?`;
         db.query(Qry, [req.params.id], (err, results)=> {
             if(err) throw err;
             res.status(200).json({results: results})
@@ -185,7 +181,6 @@ class Product {
                 }
             }
         );
-
     }
     updateProduct(req, res) {
         const Qry =
@@ -203,7 +198,6 @@ class Product {
                 }
             }
         );
-
     }
     deleteProduct(req, res) {
         const Qry =
