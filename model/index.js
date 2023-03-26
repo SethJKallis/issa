@@ -10,14 +10,18 @@ const {createToken} = require('../middleware/AuthenticatedUser');
 // User
 class User {
     login(req, res) {
-        const {emailAdd, userPass} = req.body;
+        const {email, userPass} = req.body;
         const Qry =
         `
-        SELECT first_name, last_name, email, userpassword, userRole,
-        FROM Users
-        WHERE email = '${emailAdd}';
-        `;
-        db.query(Qry, async (err, data)=>{
+        SELECT userID, 
+        firstName, 
+        lastName, 
+        email, 
+        userPass, 
+        userRole 
+        FROM users 
+        WHERE email = ?`;
+        db.query(Qry, [email], async (err, data)=>{
             if(err) throw err;
             if((!data.length) || (data == null)) {
                 res.status(401).json({err:
@@ -31,7 +35,7 @@ class User {
                         const jwToken =
                         createToken(
                             {
-                                emailAdd, userPass
+                                email, userPass
                             }
                         );
                         // Saving
@@ -58,8 +62,8 @@ class User {
     fetchUsers(req, res) {
         const Qry =
         `
-        SELECT user_ID, first_name, last_name, email, phone_number, userRole, userpassword
-        FROM Users;
+        SELECT userID, firstName, lastName, email, userRole, userPass
+        FROM users;
         `;
 
         // Results db
@@ -72,9 +76,9 @@ class User {
     fetchUser(req, res) {
         const Qry =
         `
-        SELECT user_ID, first_name, last_name, email, phone_number, userRole, userpassword
-        FROM Users
-        WHERE user_id = ?;
+        SELECT userID, firstName, lastName, email, userRole, userPass
+        FROM users
+        WHERE userID = ?;
         `;
 
         // Results db
@@ -98,7 +102,7 @@ class User {
         }
         // How to insert a sql query
         const Qry =
-        `INSERT INTO Users
+        `INSERT INTO users
         SET ?;`;
         db.query(Qry, [detail], (err)=> {
             if(err) {
@@ -123,9 +127,9 @@ class User {
             data.userPass = hashSync(data.userPass, 15);
         const Qry =
         `
-        UPDATE Users
+        UPDATE users
         SET ?
-        WHERE user_id = ?;
+        WHERE userID = ?;
         `;
         // Update db
         db.query(Qry,[data, req.params.id],
@@ -139,7 +143,7 @@ class User {
         const Qry =
         `
         DELETE FROM Users
-        WHERE user_id = ?;
+        WHERE userID = ?;
         `;
         //Remove Database (db)
         db.query(Qry,[req.params.id],
@@ -161,7 +165,7 @@ class Product {
     }
     fetchProduct(req, res) {
         const Qry = `SELECT * FROM AirBnB
-        WHERE AirBnB_id = ?`;
+        WHERE airbnbID = ?`;
         db.query(Qry, [req.params.id], (err, results)=> {
             if(err) throw err;
             res.status(200).json({results: results})
@@ -187,7 +191,7 @@ class Product {
         `
         UPDATE AirBnB
         SET ?
-        WHERE AirBnb_id = ?
+        WHERE airbnbID = ?
         `;
         db.query(Qry,[req.body, req.params.id],
             (err)=> {
@@ -203,7 +207,7 @@ class Product {
         const Qry =
         `
         DELETE FROM AirBnB
-        WHERE AirBnb_id = ?;
+        WHERE airbnbID = ?;
         `;
         db.query(Qry,[req.params.id], (err)=> {
             if(err) res.status(400).json({err: "The record was not found."});
